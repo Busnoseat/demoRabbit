@@ -1,0 +1,5 @@
+rootProject.name = 'demoRabbit'
+include 'demoRabbitCon'
+include 'demoRabbitPro'
+include 'demoRabbitCon'
+

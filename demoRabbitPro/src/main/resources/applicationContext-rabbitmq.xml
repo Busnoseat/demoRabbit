@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+
+    http://www.springframework.org/schema/rabbit
+    http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd" >
+
+    <!-- 连接配置 -->
+    <rabbit:connection-factory id="connectionFactory" host="${mq.host}" port="${mq.port}" username="${mq.username}" password="${mq.password}"/>
+    <rabbit:admin connection-factory="connectionFactory"/>
+
+    <!-- 定义exchange -->
+    <rabbit:template id="amqpTemplate" connection-factory="connectionFactory" exchange="demoExchange"/>
+
+    <!-- 定义queue -->
+    <rabbit:queue name="rabbitMQUser" durable="true" exclusive="false" auto-delete="false"/>
+
+    <!-- 将queue绑定到exchange上 -->
+    <rabbit:topic-exchange name="demoExchange">
+        <rabbit:bindings>
+            <rabbit:binding queue="rabbitMQUser" pattern="com.busnoseat.*.*"/>
+        </rabbit:bindings>
+    </rabbit:topic-exchange>
+
+</beans>
